@@ -1,0 +1,8 @@
+{
+  "name": "Mouse charge",
+  "description": "Shows mouse charge",
+  "uuid": "mouse-charge@github.com",
+  "shell-version": [
+    "49"
+  ]
+}
