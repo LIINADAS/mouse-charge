@@ -2,6 +2,8 @@
 
 GNOME Shell extension that displays the battery charge of your wireless mouse in the top panel.
 
+![Panel example](Screenshot_mouse_charge_short.png)
+
 ## Features
 
 - 🖱️ Shows real-time mouse battery percentage in the top panel
