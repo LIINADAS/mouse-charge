@@ -11,10 +11,48 @@ import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
 let selectedDevice = 'battery_hidpp_battery_0'; // Устройство по умолчанию
 
+
+function getConfigPath() {
+    const homeDir = GLib.get_home_dir();
+    return GLib.build_filenamev([homeDir, '.local/share/gnome-shell/extensions/mouse-charge@github.com/device.config']);
+}
+
+function loadDeviceFromConfig() {
+    try {
+        const file = Gio.File.new_for_path(getConfigPath());
+        const [success, contents] = file.load_contents(null);
+        if (success) {
+            const text = new TextDecoder().decode(contents);
+            const match = text.match(/default=(.+)/);
+            if (match && match[1].trim()) {
+                selectedDevice = match[1].trim();
+            }
+        }
+    } catch (e) {
+        logError(e);
+    }
+}
+
+function saveDeviceToConfig() {
+    try {
+        const file = Gio.File.new_for_path(getConfigPath());
+        const content = `default=${selectedDevice}`;
+        file.replace_contents(content, null, false, Gio.FileCreateFlags.NONE, null);
+    } catch (e) {
+        logError(e);
+    }
+}
+
+
 const Indicator = GObject.registerClass(
 class Indicator extends PanelMenu.Button {
     _init() {
         super._init(0.0, _('Mouse Battery'));
+
+
+
+        // Загружаем сохраненное устройство
+        loadDeviceFromConfig();
 
         // Контейнер для иконки и текста
         const box = new St.BoxLayout({ style_class: 'panel-status-menu-box' });
@@ -37,7 +75,8 @@ class Indicator extends PanelMenu.Button {
         this.menu.addMenuItem(deviceSection);
 
         // Кнопка для загрузки устройств
-        let loadDevicesItem = new PopupMenu.PopupMenuItem(_('Load Devices'));
+        let loadDevicesItem = new PopupMenu.PopupMenuItem(_('🔄 Load Devices'));
+
         loadDevicesItem.connect('activate', () => {
             this._loadDevices(deviceSection);
         });
@@ -83,6 +122,9 @@ class Indicator extends PanelMenu.Button {
                         let deviceItem = new PopupMenu.PopupMenuItem(device);
                         deviceItem.connect('activate', () => {
                             selectedDevice = device//.split('/').pop(); // Берём последнюю часть пути
+
+                            saveDeviceToConfig(); // Сохраняем выбор в конфиг
+
                             this._updateBattery();
                         });
                         section.addMenuItem(deviceItem);
