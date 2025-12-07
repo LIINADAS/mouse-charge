@@ -1,6 +1,6 @@
 {
   "name": "Mouse charge",
-  "description": "GNOME Shell extension that displays the battery charge of your wireless mouse in the top panel.\nFeatures:\n 1 - 🖱️ Shows real-time mouse battery percentage in the top panel\n 2- 📱 Supports multiple input devices\n 3 - 🔄 Auto-refreshes every 30 seconds\n 4 - 🎯 Easy device switching from the dropdown menu",
+  "description": "GNOME Shell extension that displays the battery charge of your wireless mouse in the top panel.\nFeatures:\n 1 - 🖱️ Shows real-time mouse battery percentage in the top panel\n 2 - 📱 Supports multiple input devices\n 3 - 🔄 Auto-refreshes every 30 seconds\n 4 - 🎯 Easy device switching from the dropdown menu",
   "uuid": "mouse-charge@github.com",
   "url" : "https://github.com/LIINADAS/mouse-charge",
   "shell-version": [
